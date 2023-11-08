@@ -1,3 +1,1 @@
-pub struct MainMemory {
-
-}
+pub struct MainMemory {}

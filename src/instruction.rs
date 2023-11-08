@@ -1,3 +1,1 @@
-pub struct Instruction {
-
-}
+pub struct Instruction {}
