@@ -1,7 +1,7 @@
 /// A byte is a group of 8 bits.
 /// true = 1, false = 0
 /// Little endian.
-#[derive(Clone)]
+#[derive(Copy, Clone, Eq, PartialEq)]
 pub struct Byte(bool, bool, bool, bool, bool, bool, bool, bool);
 
 impl Byte {
@@ -168,7 +168,7 @@ mod tests {
     }
 
     #[test]
-    fn byte_get_set() {
+    fn byte_get_set_bit() {
         let mut byte = Byte::from_u8(255);
         assert!(byte.get(0));
         byte.set(0, false);
