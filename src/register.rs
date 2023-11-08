@@ -1,7 +1,16 @@
-pub enum Register {
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+pub enum RegisterKind {
+    /// hardwired zero
     Zero,
+    /// return address
     RA,
+    /// stack pointer
     SP,
+    /// global pointer
+    GP,
+    /// thread pointer
+    TP,
+    /// temporary
     T0,
     T1,
     T2,
@@ -9,15 +18,17 @@ pub enum Register {
     T4,
     T5,
     T6,
-    A0,
-    A1,
+    /// function argument
+    A0,  // return value
+    A1,  // return value
     A2,
     A3,
     A4,
     A5,
     A6,
     A7,
-    S0,
+    /// saved register
+    S0,  // frame pointer
     S1,
     S2,
     S3,
