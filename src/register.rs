@@ -19,8 +19,8 @@ pub enum RegisterKind {
     T5,
     T6,
     /// function argument
-    A0,  // return value
-    A1,  // return value
+    A0, // return value
+    A1, // return value
     A2,
     A3,
     A4,
@@ -28,7 +28,7 @@ pub enum RegisterKind {
     A6,
     A7,
     /// saved register
-    S0,  // frame pointer
+    S0, // frame pointer
     S1,
     S2,
     S3,

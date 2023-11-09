@@ -1,19 +1,16 @@
-use crate::byte::Byte;
+use crate::binary::Byte;
+use crate::binary::Word;
 
-pub type Word = [Byte; 8];
-
-// Note that this can not be set too large, otherwise the program
-// will fail to new MainMemory due to invalid memory reference.
-const MEMORY_SIZE: usize = 1024; // 1KB
+const MEMORY_SIZE: usize = 1024 * 1024; // 1MB
 
 pub struct MainMemory {
-    mem: [Byte; MEMORY_SIZE],
+    mem: Vec<Byte>,
 }
 
 impl MainMemory {
     pub fn new() -> Self {
         Self {
-            mem: [Byte::new(); MEMORY_SIZE],
+            mem: vec![Byte::new(); MEMORY_SIZE],
         }
     }
 
@@ -26,23 +23,23 @@ impl MainMemory {
     }
 
     pub fn read_word(&self, addr: usize) -> Word {
-        let mut word = [Byte::new(); 8];
+        let mut word = Word::new();
         for i in 0..8 {
-            word[i] = self.read_byte(addr + i);
+            word.set(i, self.read_byte(addr + i))
         }
         word
     }
 
     pub fn write_word(&mut self, addr: usize, data: Word) {
         for i in 0..8 {
-            self.write_byte(addr + i, data[i]);
+            self.write_byte(addr + i, data.get(i));
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::byte::Byte;
+    use crate::binary::{Byte, Word};
     use crate::memory::MainMemory;
 
     #[test]
@@ -55,7 +52,13 @@ mod tests {
     #[test]
     fn read_write_word() {
         let mut mem = MainMemory::new();
-        mem.write_word(1, [Byte::from_u8(255); 8]);
-        assert_eq!(mem.read_word(1), [Byte::from_u8(255); 8]);
+
+        let mut word = Word::new();
+        word.set(0, Byte::from_u8(255));
+        word.set(1, Byte::from_u8(255));
+        word.set(7, Byte::from_u8(255));
+
+        mem.write_word(1, word.clone());
+        assert_eq!(mem.read_word(1), word);
     }
 }

@@ -1,4 +1,4 @@
-mod byte;
+mod binary;
 mod instruction;
 mod memory;
 mod program;

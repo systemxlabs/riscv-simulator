@@ -1,15 +1,16 @@
+use crate::binary::{Bit, BIT_0, BIT_1};
+
 /// A byte is a group of 8 bits.
-/// true = 1, false = 0
 /// Little endian.
 #[derive(Copy, Clone, Eq, PartialEq)]
-pub struct Byte(bool, bool, bool, bool, bool, bool, bool, bool);
+pub struct Byte(Bit, Bit, Bit, Bit, Bit, Bit, Bit, Bit);
 
 impl Byte {
     pub fn new() -> Self {
-        Self(false, false, false, false, false, false, false, false)
+        Self(BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0)
     }
 
-    pub fn set(&mut self, index: usize, value: bool) {
+    pub fn set(&mut self, index: usize, value: Bit) {
         match index {
             0 => self.0 = value,
             1 => self.1 = value,
@@ -23,7 +24,7 @@ impl Byte {
         }
     }
 
-    pub fn get(&self, index: usize) -> bool {
+    pub fn get(&self, index: usize) -> Bit {
         match index {
             0 => self.0,
             1 => self.1,
@@ -39,28 +40,28 @@ impl Byte {
 
     pub fn to_u8(&self) -> u8 {
         let mut result = 0;
-        if self.0 {
+        if self.0.get() {
             result += 1;
         }
-        if self.1 {
+        if self.1.get() {
             result += 2;
         }
-        if self.2 {
+        if self.2.get() {
             result += 4;
         }
-        if self.3 {
+        if self.3.get() {
             result += 8;
         }
-        if self.4 {
+        if self.4.get() {
             result += 16;
         }
-        if self.5 {
+        if self.5.get() {
             result += 32;
         }
-        if self.6 {
+        if self.6.get() {
             result += 64;
         }
-        if self.7 {
+        if self.7.get() {
             result += 128;
         }
         result
@@ -69,35 +70,35 @@ impl Byte {
     pub fn from_u8(mut value: u8) -> Self {
         let mut result = Self::new();
         if value / 128 >= 1 {
-            result.7 = true;
+            result.7 = BIT_1;
             value %= 128;
         }
         if value / 64 >= 1 {
-            result.6 = true;
+            result.6 = BIT_1;
             value %= 64;
         }
         if value / 32 >= 1 {
-            result.5 = true;
+            result.5 = BIT_1;
             value %= 32;
         }
         if value / 16 >= 1 {
-            result.4 = true;
+            result.4 = BIT_1;
             value %= 16;
         }
         if value / 8 >= 1 {
-            result.3 = true;
+            result.3 = BIT_1;
             value %= 8;
         }
         if value / 4 >= 1 {
-            result.2 = true;
+            result.2 = BIT_1;
             value %= 4;
         }
         if value / 2 >= 1 {
-            result.1 = true;
+            result.1 = BIT_1;
             value %= 2;
         }
         if value / 1 >= 1 {
-            result.0 = true;
+            result.0 = BIT_1;
         }
         result
     }
@@ -112,7 +113,7 @@ impl Byte {
             self.4 = self.5;
             self.5 = self.6;
             self.6 = self.7;
-            self.7 = false;
+            self.7 = BIT_0;
         }
     }
 
@@ -126,7 +127,7 @@ impl Byte {
             self.3 = self.2;
             self.2 = self.1;
             self.1 = self.0;
-            self.0 = false;
+            self.0 = BIT_0;
         }
     }
 }
@@ -135,22 +136,16 @@ impl std::fmt::Debug for Byte {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "{}{}{}{}{}{}{}{}",
-            if self.0 { 1 } else { 0 },
-            if self.1 { 1 } else { 0 },
-            if self.2 { 1 } else { 0 },
-            if self.3 { 1 } else { 0 },
-            if self.4 { 1 } else { 0 },
-            if self.5 { 1 } else { 0 },
-            if self.6 { 1 } else { 0 },
-            if self.7 { 1 } else { 0 },
+            "{:?}{:?}{:?}{:?}{:?}{:?}{:?}{:?}",
+            self.0, self.1, self.2, self.3, self.4, self.5, self.6, self.7,
         )
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::byte::Byte;
+    use super::Byte;
+    use crate::binary::{BIT_0, BIT_1};
 
     #[test]
     fn byte_from_to_u8() {
@@ -170,9 +165,9 @@ mod tests {
     #[test]
     fn byte_get_set_bit() {
         let mut byte = Byte::from_u8(255);
-        assert!(byte.get(0));
-        byte.set(0, false);
-        assert!(!byte.get(0));
+        assert_eq!(byte.get(0), BIT_1);
+        byte.set(0, BIT_0);
+        assert_eq!(byte.get(0), BIT_0);
     }
 
     #[test]
