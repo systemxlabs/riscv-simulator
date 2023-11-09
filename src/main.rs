@@ -1,4 +1,5 @@
 mod binary;
+mod gate;
 mod instruction;
 mod memory;
 mod program;
