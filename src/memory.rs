@@ -1,5 +1,5 @@
-use crate::binary::Byte;
 use crate::binary::Word;
+use crate::binary::{Byte, WORD_BYTE_SIZE};
 
 const MEMORY_SIZE: usize = 1024 * 1024; // 1MB
 
@@ -24,15 +24,15 @@ impl MainMemory {
 
     pub fn read_word(&self, addr: usize) -> Word {
         let mut word = Word::new();
-        for i in 0..8 {
-            word.set(i, self.read_byte(addr + i))
+        for i in 0..WORD_BYTE_SIZE {
+            word.set_byte(i, self.read_byte(addr + i))
         }
         word
     }
 
     pub fn write_word(&mut self, addr: usize, data: Word) {
-        for i in 0..8 {
-            self.write_byte(addr + i, data.get(i));
+        for i in 0..WORD_BYTE_SIZE {
+            self.write_byte(addr + i, data.byte(i));
         }
     }
 }
@@ -54,9 +54,9 @@ mod tests {
         let mut mem = MainMemory::new();
 
         let mut word = Word::new();
-        word.set(0, Byte::from_u8(255));
-        word.set(1, Byte::from_u8(255));
-        word.set(7, Byte::from_u8(255));
+        word.set_byte(0, Byte::from_u8(255));
+        word.set_byte(1, Byte::from_u8(255));
+        word.set_byte(3, Byte::from_u8(255));
 
         mem.write_word(1, word.clone());
         assert_eq!(mem.read_word(1), word);

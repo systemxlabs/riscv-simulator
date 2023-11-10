@@ -5,6 +5,7 @@ use crate::gate::xor::XorGate;
 pub struct HalfAdder;
 
 impl HalfAdder {
+    /// input two bits, output carry + sum
     pub fn exec(input1: Bit, input2: Bit) -> (Bit, Bit) {
         let sum = XorGate::exec(input1, input2);
         let carry = AndGate::exec(input1, input2);
@@ -14,8 +15,8 @@ impl HalfAdder {
 
 #[cfg(test)]
 mod tests {
+    use crate::alu::half_adder::HalfAdder;
     use crate::binary::{BIT_0, BIT_1};
-    use crate::gate::half_adder::HalfAdder;
 
     #[test]
     fn half_adder() {

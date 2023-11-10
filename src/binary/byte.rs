@@ -1,5 +1,7 @@
 use crate::binary::{Bit, BIT_0, BIT_1};
 
+pub const BYTE_BIT_SIZE: usize = 8; // 4 bits
+
 /// A byte is a group of 8 bits.
 /// Little endian.
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -24,7 +26,7 @@ impl Byte {
         }
     }
 
-    pub fn get(&self, index: usize) -> Bit {
+    pub fn bit(&self, index: usize) -> Bit {
         match index {
             0 => self.0,
             1 => self.1,
@@ -165,9 +167,9 @@ mod tests {
     #[test]
     fn byte_get_set_bit() {
         let mut byte = Byte::from_u8(255);
-        assert_eq!(byte.get(0), BIT_1);
+        assert_eq!(byte.bit(0), BIT_1);
         byte.set(0, BIT_0);
-        assert_eq!(byte.get(0), BIT_0);
+        assert_eq!(byte.bit(0), BIT_0);
     }
 
     #[test]
