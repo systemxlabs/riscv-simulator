@@ -2,7 +2,7 @@ use crate::binary::{Bit, Byte, BYTE_BIT_SIZE};
 
 pub const WORD_BYTE_SIZE: usize = 4; // 4 bytes
 
-#[derive(Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Eq, PartialEq, Copy, Clone)]
 pub struct Word(Byte, Byte, Byte, Byte);
 
 impl Word {
@@ -58,6 +58,12 @@ impl Word {
             3 => self.3.set(bit_index % BYTE_BIT_SIZE, value),
             _ => panic!("Index out of bounds"),
         }
+    }
+}
+
+impl std::fmt::Debug for Word {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}{:?}{:?}{:?}", self.0, self.1, self.2, self.3)
     }
 }
 

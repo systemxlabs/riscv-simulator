@@ -1,4 +1,6 @@
+use crate::alu;
 use crate::binary::Word;
+use crate::instruction::Instruction::SLLI;
 use crate::register::RegisterKind;
 
 pub struct Immediate(i32);
@@ -87,5 +89,21 @@ pub enum Instruction {
 impl Instruction {
     pub fn word(&self) -> Word {
         todo!()
+    }
+
+    pub fn as_alu_operation(&self) -> alu::Operation {
+        match self {
+            Instruction::ADD(_, _, _) | Instruction::ADDI(_, _, _) => alu::Operation::ADD,
+            Instruction::AND(_, _, _) | Instruction::ANDI(_, _, _) => alu::Operation::AND,
+            Instruction::SUB(_, _, _) => alu::Operation::SUB,
+            Instruction::OR(_, _, _) | Instruction::ORI(_, _, _) => alu::Operation::OR,
+            Instruction::XOR(_, _, _) | Instruction::XORI(_, _, _) => alu::Operation::XOR,
+            Instruction::SLL(_, _, _) | Instruction::SLLI(_, _, _) => alu::Operation::SLL,
+            Instruction::SRA(_, _, _) | Instruction::SRAI(_, _, _) => alu::Operation::SRA,
+            Instruction::SRL(_, _, _) | Instruction::SRLI(_, _, _) => alu::Operation::SRA,
+            Instruction::SLT(_, _, _) | Instruction::SLTI(_, _, _) => alu::Operation::SLT,
+            Instruction::SLTU(_, _, _) | Instruction::SLTIU(_, _, _) => alu::Operation::SLTU,
+            _ => panic!("Can not convert to alu operation"),
+        }
     }
 }

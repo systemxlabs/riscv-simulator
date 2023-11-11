@@ -55,34 +55,6 @@ impl Byte {
             Bit::from_str(&s[7..8]),
         )
     }
-
-    /// left shift
-    pub fn lshift(&mut self, value: usize) {
-        for _ in 0..value {
-            self.0 = self.1;
-            self.1 = self.2;
-            self.2 = self.3;
-            self.3 = self.4;
-            self.4 = self.5;
-            self.5 = self.6;
-            self.6 = self.7;
-            self.7 = BIT_0;
-        }
-    }
-
-    /// right shift
-    pub fn rshift(&mut self, value: usize) {
-        for _ in 0..value {
-            self.7 = self.6;
-            self.6 = self.5;
-            self.5 = self.4;
-            self.4 = self.3;
-            self.3 = self.2;
-            self.2 = self.1;
-            self.1 = self.0;
-            self.0 = BIT_0;
-        }
-    }
 }
 
 impl std::fmt::Debug for Byte {
@@ -101,19 +73,10 @@ mod tests {
     use crate::binary::{BIT_0, BIT_1};
 
     #[test]
-    fn byte_get_set_bit() {
+    fn get_set_bit() {
         let mut byte = Byte::ALL_ONE;
         assert_eq!(byte.bit(0), BIT_1);
         byte.set(0, BIT_0);
         assert_eq!(byte.bit(0), BIT_0);
-    }
-
-    #[test]
-    fn byte_shift() {
-        let mut byte = Byte::ALL_ONE;
-        byte.lshift(2);
-        assert_eq!(format!("{:?}", byte), "11111100");
-        byte.rshift(3);
-        assert_eq!(format!("{:?}", byte), "00011111");
     }
 }
