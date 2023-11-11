@@ -45,8 +45,8 @@ mod tests {
     #[test]
     fn read_write_byte() {
         let mut mem = MainMemory::new();
-        mem.write_byte(0, Byte::from_u8(255));
-        assert_eq!(mem.read_byte(0), Byte::from_u8(255));
+        mem.write_byte(0, Byte::ALL_ONE);
+        assert_eq!(mem.read_byte(0), Byte::ALL_ONE);
     }
 
     #[test]
@@ -54,9 +54,9 @@ mod tests {
         let mut mem = MainMemory::new();
 
         let mut word = Word::new();
-        word.set_byte(0, Byte::from_u8(255));
-        word.set_byte(1, Byte::from_u8(255));
-        word.set_byte(3, Byte::from_u8(255));
+        word.set_byte(0, Byte::ALL_ONE);
+        word.set_byte(1, Byte::ALL_ONE);
+        word.set_byte(3, Byte::ALL_ONE);
 
         mem.write_word(1, word.clone());
         assert_eq!(mem.read_word(1), word);

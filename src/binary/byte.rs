@@ -8,6 +8,8 @@ pub const BYTE_BIT_SIZE: usize = 8; // 4 bits
 pub struct Byte(Bit, Bit, Bit, Bit, Bit, Bit, Bit, Bit);
 
 impl Byte {
+    pub const ALL_ONE: Byte = Byte(BIT_1, BIT_1, BIT_1, BIT_1, BIT_1, BIT_1, BIT_1, BIT_1);
+
     pub fn new() -> Self {
         Self(BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0)
     }
@@ -40,69 +42,18 @@ impl Byte {
         }
     }
 
-    pub fn to_u8(&self) -> u8 {
-        let mut result = 0;
-        if self.0.get() {
-            result += 1;
-        }
-        if self.1.get() {
-            result += 2;
-        }
-        if self.2.get() {
-            result += 4;
-        }
-        if self.3.get() {
-            result += 8;
-        }
-        if self.4.get() {
-            result += 16;
-        }
-        if self.5.get() {
-            result += 32;
-        }
-        if self.6.get() {
-            result += 64;
-        }
-        if self.7.get() {
-            result += 128;
-        }
-        result
-    }
-
-    pub fn from_u8(mut value: u8) -> Self {
-        let mut result = Self::new();
-        if value / 128 >= 1 {
-            result.7 = BIT_1;
-            value %= 128;
-        }
-        if value / 64 >= 1 {
-            result.6 = BIT_1;
-            value %= 64;
-        }
-        if value / 32 >= 1 {
-            result.5 = BIT_1;
-            value %= 32;
-        }
-        if value / 16 >= 1 {
-            result.4 = BIT_1;
-            value %= 16;
-        }
-        if value / 8 >= 1 {
-            result.3 = BIT_1;
-            value %= 8;
-        }
-        if value / 4 >= 1 {
-            result.2 = BIT_1;
-            value %= 4;
-        }
-        if value / 2 >= 1 {
-            result.1 = BIT_1;
-            value %= 2;
-        }
-        if value / 1 >= 1 {
-            result.0 = BIT_1;
-        }
-        result
+    pub fn from_str(s: &str) -> Self {
+        assert_eq!(s.len(), 8);
+        Self(
+            Bit::from_str(&s[0..1]),
+            Bit::from_str(&s[1..2]),
+            Bit::from_str(&s[2..3]),
+            Bit::from_str(&s[3..4]),
+            Bit::from_str(&s[4..5]),
+            Bit::from_str(&s[5..6]),
+            Bit::from_str(&s[6..7]),
+            Bit::from_str(&s[7..8]),
+        )
     }
 
     /// left shift
@@ -150,23 +101,8 @@ mod tests {
     use crate::binary::{BIT_0, BIT_1};
 
     #[test]
-    fn byte_from_to_u8() {
-        let byte = Byte::from_u8(255);
-        assert_eq!(format!("{:?}", byte), "11111111");
-        assert_eq!(byte.to_u8(), 255);
-
-        let byte = Byte::from_u8(131);
-        assert_eq!(format!("{:?}", byte), "11000001");
-        assert_eq!(byte.to_u8(), 131);
-
-        let byte = Byte::from_u8(1);
-        assert_eq!(format!("{:?}", byte), "10000000");
-        assert_eq!(byte.to_u8(), 1);
-    }
-
-    #[test]
     fn byte_get_set_bit() {
-        let mut byte = Byte::from_u8(255);
+        let mut byte = Byte::ALL_ONE;
         assert_eq!(byte.bit(0), BIT_1);
         byte.set(0, BIT_0);
         assert_eq!(byte.bit(0), BIT_0);
@@ -174,7 +110,7 @@ mod tests {
 
     #[test]
     fn byte_shift() {
-        let mut byte = Byte::from_u8(255);
+        let mut byte = Byte::ALL_ONE;
         byte.lshift(2);
         assert_eq!(format!("{:?}", byte), "11111100");
         byte.rshift(3);

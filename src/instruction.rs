@@ -1,89 +1,91 @@
+use crate::binary::Word;
 use crate::register::RegisterKind;
 
+pub struct Immediate(i32);
+impl Immediate {
+    pub fn from(v: i32) -> Self {
+        Self(v)
+    }
+}
+
+pub struct ShiftAmount(u8);
+impl ShiftAmount {
+    /// shift amount represented by 5 bits and is unsigned.
+    pub fn from(v: u8) -> Self {
+        assert!(v < 31, "Exceed max value");
+        Self(v)
+    }
+}
+
 pub enum Instruction {
-    /// U type instructions
+    /// Integer Computation
+    /// add (immediate)
+    ADD(RegisterKind, RegisterKind, RegisterKind),
+    ANDI(RegisterKind, RegisterKind, Immediate),
+    /// subtract
+    SUB(RegisterKind, RegisterKind, RegisterKind),
+    /// and (immediate)
+    AND(RegisterKind, RegisterKind, RegisterKind),
+    ADDI(RegisterKind, RegisterKind, Immediate),
+    /// or (immediate)
+    OR(RegisterKind, RegisterKind, RegisterKind),
+    ORI(RegisterKind, RegisterKind, Immediate),
+    /// xor (immediate)
+    XOR(RegisterKind, RegisterKind, RegisterKind),
+    XORI(RegisterKind, RegisterKind, Immediate),
+    /// shift left logical (immediate)
+    SLL(RegisterKind, RegisterKind, ShiftAmount),
+    SLLI(RegisterKind, RegisterKind, ShiftAmount),
+    /// shift right arithmetic (immediate)
+    SRA(RegisterKind, RegisterKind, ShiftAmount),
+    SRAI(RegisterKind, RegisterKind, ShiftAmount),
+    /// shift right logical (immediate)
+    SRL(RegisterKind, RegisterKind, ShiftAmount),
+    SRLI(RegisterKind, RegisterKind, ShiftAmount),
     /// load upper immediate
-    LUI(RegisterKind, i32),
+    LUI(RegisterKind, Immediate),
     /// add upper immediate to pc
-    AUIPC(RegisterKind, i32),
+    AUIPC(RegisterKind, Immediate),
+    /// set less than (immediate) (unsigned)
+    SLT(RegisterKind, RegisterKind, RegisterKind),
+    SLTU(RegisterKind, RegisterKind, RegisterKind),
+    SLTI(RegisterKind, RegisterKind, Immediate),
+    SLTIU(RegisterKind, RegisterKind, Immediate),
 
-    /// J type instructions
-    /// jump and link
-    JAL(i32),
+    /// Control Transfer
+    /// branch equal
+    BEQ(RegisterKind, RegisterKind, Immediate),
+    /// branch not equal
+    BNE(RegisterKind, RegisterKind, Immediate),
+    /// branch greater than or equal (unsigned)
+    BGE(RegisterKind, RegisterKind, Immediate),
+    BGEU(RegisterKind, RegisterKind, Immediate),
+    /// branch less than (unsigned)
+    BLT(RegisterKind, RegisterKind, Immediate),
+    BLTU(RegisterKind, RegisterKind, Immediate),
+    /// jump and link (register)
+    JAL(RegisterKind, Immediate),
+    JALR(RegisterKind, Immediate),
 
-    /// I type instructions
-    /// jump and link register
-    JALR(RegisterKind, i32),
-    /// load byte
+    /// Loads and Stores
+    /// load byte (unsigned)
     LB(RegisterKind, RegisterKind),
-    /// load byte unsigned
     LBU(RegisterKind, RegisterKind),
-    /// load half word
+    /// load half word (unsigned)
     LH(RegisterKind, RegisterKind),
-    /// load half word unsigned
     LHU(RegisterKind, RegisterKind),
     /// load word
     LW(RegisterKind, RegisterKind),
-    /// add immediate
-    ADDI(RegisterKind, RegisterKind, i32),
-    /// and immediate
-    ANDI(RegisterKind, RegisterKind, i32),
-    /// or immediate
-    ORI(RegisterKind, RegisterKind, i32),
-    /// xor immediate
-    XORI(RegisterKind, RegisterKind, i32),
-    /// set less than immediate
-    SLTI(RegisterKind, RegisterKind, i32),
-    /// set less than immediate unsigned
-    SLTIU(RegisterKind, RegisterKind, i32),
-    /// shift left logical immediate
-    SLLI(RegisterKind, RegisterKind, usize),
-    /// shift right logical immediate
-    SRLI(RegisterKind, RegisterKind, usize),
-    /// shift right arithmetic immediate
-    SRAI(RegisterKind, RegisterKind, usize),
-
-    /// B type instructions
-    /// branch equal
-    BEQ(RegisterKind, RegisterKind, i32),
-    /// branch not equal
-    BNE(RegisterKind, RegisterKind, i32),
-    /// branch less than
-    BLT(RegisterKind, RegisterKind, i32),
-    /// branch less than unsigned
-    BLTU(RegisterKind, RegisterKind, i32),
-    /// branch greater than or equal
-    BGE(RegisterKind, RegisterKind, i32),
-    /// branch greater than or equal unsigned
-    BGEU(RegisterKind, RegisterKind, i32),
-
-    /// S type instructions
     /// store byte
     SB(RegisterKind, RegisterKind),
     /// store half word
     SH(RegisterKind, RegisterKind),
     /// store word
     SW(RegisterKind, RegisterKind),
+}
 
-    /// R type instructions
-    /// add
-    ADD(RegisterKind, RegisterKind, RegisterKind),
-    /// subtract
-    SUB(RegisterKind, RegisterKind, RegisterKind),
-    /// and
-    AND(RegisterKind, RegisterKind, RegisterKind),
-    /// or
-    OR(RegisterKind, RegisterKind, RegisterKind),
-    /// xor
-    XOR(RegisterKind, RegisterKind, RegisterKind),
-    /// set less than
-    SLT(RegisterKind, RegisterKind, RegisterKind),
-    /// set less than unsigned
-    SLTU(RegisterKind, RegisterKind, RegisterKind),
-    /// shift left logical
-    SLL(RegisterKind, RegisterKind, usize),
-    /// shift right logical
-    SRL(RegisterKind, RegisterKind, usize),
-    /// shift right arithmetic
-    SRA(RegisterKind, RegisterKind, usize),
+impl Instruction {
+    pub fn word(&self) -> Word {
+        todo!()
+    }
 }

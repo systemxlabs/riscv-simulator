@@ -2,7 +2,7 @@ use crate::binary::{Bit, Byte, BYTE_BIT_SIZE};
 
 pub const WORD_BYTE_SIZE: usize = 4; // 4 bytes
 
-#[derive(Debug, Eq, PartialEq, Clone)]
+#[derive(Debug, Eq, PartialEq, Copy, Clone)]
 pub struct Word(Byte, Byte, Byte, Byte);
 
 impl Word {
@@ -12,6 +12,16 @@ impl Word {
 
     pub fn from(byte0: Byte, byte1: Byte, byte2: Byte, byte3: Byte) -> Self {
         Self(byte0, byte1, byte2, byte3)
+    }
+
+    pub fn from_str(s: &str) -> Self {
+        assert_eq!(s.len(), 32);
+        Self(
+            Byte::from_str(&s[0..8]),
+            Byte::from_str(&s[8..16]),
+            Byte::from_str(&s[16..24]),
+            Byte::from_str(&s[24..32]),
+        )
     }
 
     pub fn set_byte(&mut self, byte_index: usize, value: Byte) {
@@ -58,8 +68,8 @@ mod tests {
     #[test]
     fn get_set_bit() {
         let mut word = Word::new();
-        word.set_byte(0, Byte::from_u8(255));
-        word.set_byte(2, Byte::from_u8(255));
+        word.set_byte(0, Byte::ALL_ONE);
+        word.set_byte(2, Byte::ALL_ONE);
 
         assert_eq!(word.bit(0), BIT_1);
         assert_eq!(word.bit(7), BIT_1);

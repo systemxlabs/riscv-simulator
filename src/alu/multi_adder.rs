@@ -17,6 +17,7 @@ impl MultiAdder {
             carry_in = carry_out;
             sum_word.set_bit(i, sum);
         }
+
         (carry_in, sum_word)
     }
 }
@@ -29,43 +30,38 @@ mod tests {
     #[test]
     fn multi_adder() {
         let mut word1 = Word::new();
-        word1.set_byte(0, Byte::from_u8(255));
-        word1.set_byte(2, Byte::from_u8(255));
+        word1.set_byte(0, Byte::ALL_ONE);
+        word1.set_byte(2, Byte::ALL_ONE);
 
         let mut word2 = Word::new();
-        word2.set_byte(1, Byte::from_u8(255));
-        word2.set_byte(3, Byte::from_u8(255));
+        word2.set_byte(1, Byte::ALL_ONE);
+        word2.set_byte(3, Byte::ALL_ONE);
 
         let (carry, sum) = MultiAdder::exec(word1, word2, BIT_0);
         assert_eq!(carry, BIT_0);
         assert_eq!(
             sum,
-            Word::from(
-                Byte::from_u8(255),
-                Byte::from_u8(255),
-                Byte::from_u8(255),
-                Byte::from_u8(255)
-            )
+            Word::from(Byte::ALL_ONE, Byte::ALL_ONE, Byte::ALL_ONE, Byte::ALL_ONE)
         );
 
         let mut word1 = Word::new();
-        word1.set_byte(0, Byte::from_u8(255));
-        word1.set_byte(2, Byte::from_u8(255));
+        word1.set_byte(0, Byte::ALL_ONE);
+        word1.set_byte(2, Byte::ALL_ONE);
         word1.set_bit(31, BIT_1);
 
         let mut word2 = Word::new();
-        word2.set_byte(1, Byte::from_u8(255));
-        word2.set_byte(3, Byte::from_u8(255));
+        word2.set_byte(1, Byte::ALL_ONE);
+        word2.set_byte(3, Byte::ALL_ONE);
 
         let (carry, sum) = MultiAdder::exec(word1, word2, BIT_0);
         assert_eq!(carry, BIT_1);
         assert_eq!(
             sum,
             Word::from(
-                Byte::from_u8(255),
-                Byte::from_u8(255),
-                Byte::from_u8(255),
-                Byte::from_u8(127)
+                Byte::ALL_ONE,
+                Byte::ALL_ONE,
+                Byte::ALL_ONE,
+                Byte::from_str("11111110")
             )
         );
     }

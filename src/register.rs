@@ -1,3 +1,5 @@
+use crate::binary::Bit;
+
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum RegisterKind {
     /// hardwired zero
@@ -40,4 +42,11 @@ pub enum RegisterKind {
     S9,
     S10,
     S11,
+}
+
+impl RegisterKind {
+    pub fn bits(&self) -> [Bit; 5] {
+        let bits = [Bit::new(); 5];
+        todo!()
+    }
 }

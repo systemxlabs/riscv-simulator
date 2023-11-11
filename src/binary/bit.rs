@@ -14,6 +14,14 @@ impl Bit {
         Self(value)
     }
 
+    pub fn from_str(s: &str) -> Self {
+        assert_eq!(s.len(), 1);
+        match s {
+            "0" => BIT_0,
+            "1" => BIT_1,
+            _ => panic!("failed parse str as bit"),
+        }
+    }
     pub fn get(&self) -> bool {
         self.0
     }
