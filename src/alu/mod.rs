@@ -1,8 +1,10 @@
 pub mod full_adder;
 pub mod half_adder;
 pub mod multi_adder;
+pub mod shifter;
 
 use crate::alu::multi_adder::MultiAdder;
+use crate::alu::shifter::Shifter;
 use crate::binary::{Bit, Byte, Word, BIT_0, BIT_1, BYTE_BIT_SIZE, WORD_BYTE_SIZE};
 use crate::gate::and::AndGate;
 use crate::gate::not::NotGate;
@@ -39,9 +41,9 @@ impl Alu {
             Operation::XOR => self.bit_xor(input1, input2),
             Operation::SLT => todo!(),
             Operation::SLTU => todo!(),
-            Operation::SLL => todo!(),
-            Operation::SRL => todo!(),
-            Operation::SRA => todo!(),
+            Operation::SLL |
+            Operation::SRL |
+            Operation::SRA => Shifter::exec(op, input1, input2),
         }
     }
 
@@ -101,8 +103,10 @@ impl Alu {
     }
 
     fn negative(&self, input: Word) -> Word {
-        let word_one = Word::from_str("10000000000000000000000000000000");
+        // Note that this is not like converting original code to complement,
+        // not need to keep the sign bit.
         let word = self.bit_not(input);
+        let word_one = Word::from_str("10000000000000000000000000000000");
         MultiAdder::exec(word, word_one, BIT_0).1
     }
 }

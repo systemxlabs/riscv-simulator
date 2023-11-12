@@ -1,6 +1,5 @@
 use crate::alu;
 use crate::binary::Word;
-use crate::instruction::Instruction::SLLI;
 use crate::register::RegisterKind;
 
 pub struct Immediate(i32);
