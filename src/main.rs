@@ -6,6 +6,7 @@ mod instruction;
 mod memory;
 mod program;
 mod register;
+mod cpu;
 
 fn main() {
     println!("Hello, world!");
