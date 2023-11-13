@@ -34,8 +34,10 @@ pub struct Alu;
 impl Alu {
     pub fn exec(&self, op: Operation, input1: Word, input2: Word) -> Word {
         match op {
-            Operation::ADD => self.add(input1, input2),
-            Operation::SUB => self.add(input1, self.negative(input2)),
+            Operation::ADD => self.add(input1, input2, BIT_0),
+            // Note that this is not like converting original code to complement,
+            // not need to keep the sign bit.
+            Operation::SUB => self.add(input1, self.bit_not(input2), BIT_1),
             Operation::OR => self.bit_or(input1, input2),
             Operation::AND => self.bit_and(input1, input2),
             Operation::XOR => self.bit_xor(input1, input2),
@@ -47,8 +49,8 @@ impl Alu {
         }
     }
 
-    fn add(&self, input1: Word, input2: Word) -> Word {
-        MultiAdder::exec(input1, input2, BIT_0).1
+    fn add(&self, input1: Word, input2: Word, carry_in: Bit) -> Word {
+        MultiAdder::exec(input1, input2, carry_in).1
     }
 
     fn bit_and(&self, input1: Word, input2: Word) -> Word {
@@ -101,39 +103,41 @@ impl Alu {
 
         word
     }
-
-    fn negative(&self, input: Word) -> Word {
-        // Note that this is not like converting original code to complement,
-        // not need to keep the sign bit.
-        let word = self.bit_not(input);
-        let word_one = Word::from_str("10000000000000000000000000000000");
-        MultiAdder::exec(word, word_one, BIT_0).1
-    }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::alu::Alu;
-    use crate::binary::Word;
+    use crate::alu::{Alu, Operation};
+    use crate::binary::{BIT_0, Word};
 
     #[test]
-    fn negative() {
+    fn add() {
         let alu = Alu {};
 
         // complement of -5
-        let word = Word::from_str("11011111111111111111111111111111");
-        // result should be complement of 5
-        assert_eq!(
-            format!("{:?}", alu.negative(word)),
-            "10100000000000000000000000000000"
-        );
-
+        let input1 = Word::from_str("11011111111111111111111111111111");
         // complement of 5
-        let word = Word::from_str("10100000000000000000000000000000");
-        // result should be complement of -5
+        let input2 = Word::from_str("10100000000000000000000000000000");
+        // result should be 0
         assert_eq!(
-            format!("{:?}", alu.negative(word)),
-            "11011111111111111111111111111111"
+            format!("{:?}", alu.exec(Operation::ADD, input1, input2)),
+            "00000000000000000000000000000000"
         );
     }
+
+    #[test]
+    fn sub() {
+        let alu = Alu {};
+
+        // complement of -5
+        let word1 = Word::from_str("11011111111111111111111111111111");
+        // complement of 5
+        let word2 = Word::from_str("10100000000000000000000000000000");
+        // result should be complement of -10
+        assert_eq!(
+            format!("{:?}", alu.exec(Operation::SUB, word1, word2)),
+            "01101111111111111111111111111111"
+        );
+    }
+
 }
