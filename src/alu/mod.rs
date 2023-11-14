@@ -43,9 +43,7 @@ impl Alu {
             Operation::XOR => self.bit_xor(input1, input2),
             Operation::SLT => todo!(),
             Operation::SLTU => todo!(),
-            Operation::SLL |
-            Operation::SRL |
-            Operation::SRA => Shifter::exec(op, input1, input2),
+            Operation::SLL | Operation::SRL | Operation::SRA => Shifter::exec(op, input1, input2),
         }
     }
 
@@ -108,7 +106,7 @@ impl Alu {
 #[cfg(test)]
 mod tests {
     use crate::alu::{Alu, Operation};
-    use crate::binary::{BIT_0, Word};
+    use crate::binary::{Word, BIT_0};
 
     #[test]
     fn add() {
@@ -139,5 +137,4 @@ mod tests {
             "01101111111111111111111111111111"
         );
     }
-
 }
