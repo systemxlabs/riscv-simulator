@@ -37,20 +37,21 @@ mod test {
         std::env::set_var("PROGRAM_PATH", "asm/add-addi.bin");
         let main_mem = Rc::new(RefCell::new(MainMemory::new()));
         load_program(main_mem.clone());
+
         assert_eq!(
-            format!("{:?}", main_mem.borrow().read_word(0)),
-            "11001001011100000000101000000000"
+            main_mem.borrow().read_word(0).display_in_big_endian(),
+            "00000000010100000000111010010011"
         );
         assert_eq!(
-            format!("{:?}", main_mem.borrow().read_word(4)),
-            "11001000111100000000101001000000"
+            main_mem.borrow().read_word(4).display_in_big_endian(),
+            "00000010010100000000111100010011"
         );
         assert_eq!(
-            format!("{:?}", main_mem.borrow().read_word(8)),
-            "11001101111100001111101110000000"
+            main_mem.borrow().read_word(8).display_in_big_endian(),
+            "00000001110111110000111110110011"
         );
         assert_eq!(
-            format!("{:?}", main_mem.borrow().read_word(12)),
+            main_mem.borrow().read_word(12).display_in_big_endian(),
             "00000000000000000000000000000000"
         );
     }

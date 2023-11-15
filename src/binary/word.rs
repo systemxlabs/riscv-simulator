@@ -59,6 +59,17 @@ impl Word {
             _ => panic!("Index out of bounds"),
         }
     }
+
+    /// mainly for debugging
+    pub fn display_in_big_endian(&self) -> String {
+        let display = format!("{:?}", self);
+        display
+            .chars()
+            .rev()
+            .map(|c| c.to_string())
+            .collect::<Vec<_>>()
+            .join("")
+    }
 }
 
 impl std::fmt::Debug for Word {
