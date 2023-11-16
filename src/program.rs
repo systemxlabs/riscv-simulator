@@ -1,4 +1,4 @@
-use crate::binary::{Bit, Byte};
+use crate::binary::{Bit, Byte, BYTE_BIT_SIZE};
 use crate::memory::MainMemory;
 use std::cell::RefCell;
 use std::io::Read;
@@ -16,7 +16,7 @@ pub fn load_program(main_mem: Rc<RefCell<MainMemory>>) {
     let mut addr = 0;
     while let Ok(_) = reader.read_exact(&mut buf) {
         let mut byte = Byte::new();
-        for i in 0..8 {
+        for i in 0..BYTE_BIT_SIZE {
             byte.set(i, Bit::from(buf[0] & (1 << i) != 0));
         }
         main_mem.borrow_mut().write_byte(addr, byte);

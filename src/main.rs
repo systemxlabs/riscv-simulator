@@ -12,6 +12,7 @@ mod cpu;
 mod cu;
 mod gate;
 mod instruction;
+mod mem;
 mod memory;
 mod program;
 mod register;

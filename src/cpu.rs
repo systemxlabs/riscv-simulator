@@ -1,8 +1,6 @@
 use crate::alu::Alu;
-use crate::binary::Word;
 use crate::bus::Bus;
 use crate::cu::Cu;
-use crate::memory::MainMemory;
 use std::cell::RefCell;
 use std::rc::Rc;
 
