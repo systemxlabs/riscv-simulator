@@ -1,6 +1,6 @@
 use crate::binary::Bit;
-use crate::gate::and::AndGate;
-use crate::gate::xor::XorGate;
+use crate::circuit::gate::AndGate;
+use crate::circuit::gate::XorGate;
 
 pub struct HalfAdder;
 

@@ -1,7 +1,7 @@
+use crate::binary::Word;
 use crate::memory::MainMemory;
 use std::cell::RefCell;
 use std::rc::Rc;
-use crate::binary::Word;
 
 pub struct Bus {
     main_mem: Rc<RefCell<MainMemory>>,

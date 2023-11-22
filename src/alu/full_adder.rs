@@ -1,6 +1,6 @@
 use crate::alu::half_adder::HalfAdder;
 use crate::binary::Bit;
-use crate::gate::or::OrGate;
+use crate::circuit::gate::OrGate;
 
 /// One bit adder
 pub struct FullAdder;

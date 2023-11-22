@@ -10,7 +10,7 @@ mod binary;
 mod bus;
 mod cpu;
 mod cu;
-mod gate;
+mod circuit;
 mod instruction;
 mod mem;
 mod memory;
