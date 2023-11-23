@@ -1,6 +1,6 @@
 use crate::bus::Bus;
 use crate::cpu::{Cpu, Execution};
-use crate::memory::MainMemory;
+use crate::mem::MainMemory;
 use crate::program::load_program;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -13,7 +13,6 @@ mod cpu;
 mod cu;
 mod instruction;
 mod mem;
-mod memory;
 mod program;
 mod register;
 

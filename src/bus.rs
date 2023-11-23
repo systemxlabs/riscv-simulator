@@ -1,5 +1,6 @@
-use crate::binary::Word;
-use crate::memory::MainMemory;
+use crate::binary::word::EMPTY_WORD;
+use crate::binary::{Word, BIT_0};
+use crate::mem::MainMemory;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -12,7 +13,9 @@ impl Bus {
         Self { main_mem }
     }
 
-    pub fn load_instruction(&self, addr: usize) -> Word {
-        self.main_mem.borrow().read_word(addr)
+    pub fn load_instruction(&self, addr: Word) -> Word {
+        self.main_mem
+            .borrow_mut()
+            .exec_word(addr, BIT_0, EMPTY_WORD)
     }
 }
