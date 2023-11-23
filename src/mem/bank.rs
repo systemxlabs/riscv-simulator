@@ -45,7 +45,7 @@ mod tests {
     use crate::binary::{Byte, BIT_0, BIT_1};
 
     #[test]
-    fn test_bank() {
+    fn dram_bank() {
         let mut bank = Bank::new();
 
         let row_addr = [BIT_0, BIT_0, BIT_0];
