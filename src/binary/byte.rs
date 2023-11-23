@@ -2,6 +2,8 @@ use crate::binary::{Bit, BIT_0, BIT_1};
 
 pub const BYTE_BIT_SIZE: usize = 8; // 4 bits
 
+pub const EMPTY_BYTE: Byte = Byte(BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0);
+
 /// A byte is a group of 8 bits.
 /// Little endian.
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -12,6 +14,19 @@ impl Byte {
 
     pub fn new() -> Self {
         Self(BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0)
+    }
+
+    pub fn from(
+        bit0: Bit,
+        bit1: Bit,
+        bit2: Bit,
+        bit3: Bit,
+        bit4: Bit,
+        bit5: Bit,
+        bit6: Bit,
+        bit7: Bit,
+    ) -> Self {
+        Self(bit0, bit1, bit2, bit3, bit4, bit5, bit6, bit7)
     }
 
     pub fn set(&mut self, index: usize, value: Bit) {
