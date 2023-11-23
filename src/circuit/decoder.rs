@@ -1,6 +1,6 @@
-use crate::binary::Bit;
 use crate::circuit::gate::AndGate;
 use crate::circuit::gate::NotGate;
+use crate::info::Bit;
 
 pub struct OneToTwoDecoder;
 
@@ -48,8 +48,8 @@ impl ThreeToEightDecoder {
 
 #[cfg(test)]
 mod tests {
-    use crate::binary::{BIT_0, BIT_1};
     use crate::circuit::decoder::{OneToTwoDecoder, ThreeToEightDecoder, TwoToFourDecoder};
+    use crate::info::{BIT_0, BIT_1};
 
     #[test]
     fn one_to_two_decoder() {

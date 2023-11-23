@@ -1,5 +1,5 @@
 use crate::alu::Operation;
-use crate::binary::Word;
+use crate::info::Word;
 
 pub struct Shifter;
 

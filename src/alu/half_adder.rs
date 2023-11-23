@@ -1,6 +1,6 @@
-use crate::binary::Bit;
 use crate::circuit::gate::AndGate;
 use crate::circuit::gate::XorGate;
+use crate::info::Bit;
 
 pub struct HalfAdder;
 
@@ -16,7 +16,7 @@ impl HalfAdder {
 #[cfg(test)]
 mod tests {
     use crate::alu::half_adder::HalfAdder;
-    use crate::binary::{BIT_0, BIT_1};
+    use crate::info::{BIT_0, BIT_1};
 
     #[test]
     fn half_adder() {

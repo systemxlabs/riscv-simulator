@@ -1,6 +1,6 @@
-use crate::binary::{Bit, BIT_0, BIT_1};
 use crate::circuit::decoder::ThreeToEightDecoder;
 use crate::circuit::multiplexer::EightToOneMultiplexer;
+use crate::info::{Bit, BIT_0, BIT_1};
 use crate::mem::cell::Cell;
 
 pub const ARRAY_ROWS: usize = 8;

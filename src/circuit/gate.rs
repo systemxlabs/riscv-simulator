@@ -1,4 +1,4 @@
-use crate::binary::{Bit, BIT_0, BIT_1};
+use crate::info::{Bit, BIT_0, BIT_1};
 
 pub struct AndGate;
 
@@ -84,8 +84,8 @@ impl XorGate {
 
 #[cfg(test)]
 mod tests {
-    use crate::binary::{BIT_0, BIT_1};
     use crate::circuit::gate::XorGate;
+    use crate::info::{BIT_0, BIT_1};
 
     #[test]
     fn xor() {

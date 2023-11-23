@@ -6,15 +6,16 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 mod alu;
-mod binary;
 mod bus;
 mod circuit;
 mod cpu;
 mod cu;
+mod info;
 mod instruction;
 mod mem;
 mod program;
 mod register;
+mod util;
 
 fn main() {
     let main_mem = Rc::new(RefCell::new(MainMemory::new()));

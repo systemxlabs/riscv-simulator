@@ -1,4 +1,4 @@
-use crate::binary::{Bit, Byte};
+use crate::info::{Bit, Byte};
 use crate::mem::array::Array;
 
 pub const ARRAY_COUNT: usize = 8;
@@ -41,8 +41,8 @@ impl Bank {
 #[cfg(test)]
 mod tests {
     use super::Bank;
-    use crate::binary::byte::EMPTY_BYTE;
-    use crate::binary::{Byte, BIT_0, BIT_1};
+    use crate::info::byte::EMPTY_BYTE;
+    use crate::info::{Byte, BIT_0, BIT_1};
 
     #[test]
     fn dram_bank() {

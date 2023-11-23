@@ -1,4 +1,4 @@
-use crate::binary::Bit;
+use crate::info::Bit;
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum RegisterKind {

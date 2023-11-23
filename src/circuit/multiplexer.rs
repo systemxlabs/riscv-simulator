@@ -1,5 +1,5 @@
-use crate::binary::Bit;
 use crate::circuit::gate::{AndGate, AndGate4, NotGate, OrGate, OrGate4, OrGate8};
+use crate::info::Bit;
 
 pub struct TwoToOneMultiplexer;
 
@@ -56,10 +56,10 @@ impl EightToOneMultiplexer {
 
 #[cfg(test)]
 mod tests {
-    use crate::binary::{BIT_0, BIT_1};
     use crate::circuit::multiplexer::{
         EightToOneMultiplexer, FourToOneMultiplexer, TwoToOneMultiplexer,
     };
+    use crate::info::{BIT_0, BIT_1};
 
     #[test]
     fn two_to_one_multiplexer() {

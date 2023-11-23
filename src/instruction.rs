@@ -1,5 +1,5 @@
 use crate::alu;
-use crate::binary::Word;
+use crate::info::Word;
 use crate::register::RegisterKind;
 
 pub struct Immediate(i32);

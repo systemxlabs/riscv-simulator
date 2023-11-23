@@ -1,6 +1,6 @@
 use crate::alu::half_adder::HalfAdder;
-use crate::binary::Bit;
 use crate::circuit::gate::OrGate;
+use crate::info::Bit;
 
 /// One bit adder
 pub struct FullAdder;
@@ -18,7 +18,7 @@ impl FullAdder {
 #[cfg(test)]
 mod tests {
     use crate::alu::full_adder::FullAdder;
-    use crate::binary::{BIT_0, BIT_1};
+    use crate::info::{BIT_0, BIT_1};
 
     #[test]
     fn full_adder() {

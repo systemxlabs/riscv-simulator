@@ -1,6 +1,7 @@
-use crate::binary::{Bit, Byte, Word, BIT_0, BIT_1};
 use crate::circuit::decoder::TwoToFourDecoder;
+use crate::info::{Bit, Byte, Word, BIT_0, BIT_1};
 use crate::mem::chip::Chip;
+use crate::util::chip_addr;
 
 pub const CHIP_COUNT: usize = 4;
 
@@ -17,7 +18,7 @@ impl Dram {
     }
 
     pub fn exec_byte(&mut self, addr: Word, write_enable: Bit, data: Byte) -> Byte {
-        let chip_addr = [addr.bit(0), addr.bit(1)];
+        let chip_addr = chip_addr(&addr);
         match TwoToFourDecoder::exec(chip_addr[0], chip_addr[1]) {
             (BIT_1, BIT_0, BIT_0, BIT_0) => self.0[0].exec(addr, write_enable, data),
             (BIT_0, BIT_1, BIT_0, BIT_0) => self.0[1].exec(addr, write_enable, data),
@@ -28,7 +29,7 @@ impl Dram {
     }
 
     pub fn exec_half_word(&mut self, addr: Word, write_enable: Bit, data: [Byte; 2]) -> [Byte; 2] {
-        let chip_addr = [addr.bit(0), addr.bit(1)];
+        let chip_addr = chip_addr(&addr);
         let chip_index = match TwoToFourDecoder::exec(chip_addr[0], chip_addr[1]) {
             (BIT_1, BIT_0, BIT_0, BIT_0) => 0,
             (BIT_0, BIT_1, BIT_0, BIT_0) => 1,
@@ -61,9 +62,9 @@ impl Dram {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::binary::byte::EMPTY_BYTE;
-    use crate::binary::word::EMPTY_WORD;
-    use crate::binary::{BIT_0, BIT_1};
+    use crate::info::byte::EMPTY_BYTE;
+    use crate::info::word::EMPTY_WORD;
+    use crate::info::{BIT_0, BIT_1};
 
     #[test]
     fn dram_byte() {

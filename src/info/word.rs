@@ -1,5 +1,5 @@
-use crate::binary::byte::{BYTE_ONE, EMPTY_BYTE};
-use crate::binary::{Bit, Byte, BYTE_BIT_SIZE};
+use crate::info::byte::{BYTE_ONE, EMPTY_BYTE};
+use crate::info::{Bit, Byte, BYTE_BIT_SIZE};
 
 pub const WORD_BYTE_SIZE: usize = 4; // 4 bytes
 
@@ -84,7 +84,7 @@ impl std::fmt::Debug for Word {
 
 #[cfg(test)]
 mod tests {
-    use crate::binary::{Byte, Word, BIT_0, BIT_1};
+    use crate::info::{Byte, Word, BIT_0, BIT_1};
 
     #[test]
     fn get_set_bit() {

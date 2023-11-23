@@ -1,4 +1,4 @@
-use crate::binary::{Bit, BIT_0};
+use crate::info::{Bit, BIT_0};
 
 pub struct DFlipFlop {
     state: Bit,

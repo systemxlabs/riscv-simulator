@@ -5,11 +5,11 @@ pub mod shifter;
 
 use crate::alu::multi_adder::MultiAdder;
 use crate::alu::shifter::Shifter;
-use crate::binary::{Bit, Byte, Word, BIT_0, BIT_1, BYTE_BIT_SIZE, WORD_BYTE_SIZE};
 use crate::circuit::gate::AndGate;
 use crate::circuit::gate::NotGate;
 use crate::circuit::gate::OrGate;
 use crate::circuit::gate::XorGate;
+use crate::info::{Bit, Byte, Word, BIT_0, BIT_1, BYTE_BIT_SIZE, WORD_BYTE_SIZE};
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum Operation {
@@ -106,7 +106,7 @@ impl Alu {
 #[cfg(test)]
 mod tests {
     use crate::alu::{Alu, Operation};
-    use crate::binary::{Word, BIT_0};
+    use crate::info::{Word, BIT_0};
 
     #[test]
     fn add() {

@@ -1,4 +1,4 @@
-use crate::binary::Bit;
+use crate::info::Bit;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Cell(Bit);

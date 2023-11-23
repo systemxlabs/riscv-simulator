@@ -1,5 +1,5 @@
 use crate::alu::full_adder::FullAdder;
-use crate::binary::{Bit, Word, BYTE_BIT_SIZE, WORD_BYTE_SIZE};
+use crate::info::{Bit, Word, BYTE_BIT_SIZE, WORD_BYTE_SIZE};
 
 /// Multi bit adder
 pub struct MultiAdder;
@@ -25,7 +25,7 @@ impl MultiAdder {
 #[cfg(test)]
 mod tests {
     use crate::alu::multi_adder::MultiAdder;
-    use crate::binary::{Byte, Word, BIT_0, BIT_1};
+    use crate::info::{Byte, Word, BIT_0, BIT_1};
 
     #[test]
     fn multi_adder() {

@@ -1,6 +1,6 @@
 use crate::alu::{Alu, Operation};
-use crate::binary::word::WORD_ONE;
-use crate::binary::{Bit, Byte, Word, BIT_0, BIT_1, BYTE_BIT_SIZE};
+use crate::info::word::WORD_ONE;
+use crate::info::{Bit, Byte, Word, BIT_1, BYTE_BIT_SIZE};
 use crate::mem::MainMemory;
 use std::cell::RefCell;
 use std::io::Read;
@@ -35,8 +35,8 @@ pub fn load_program(main_mem: Rc<RefCell<MainMemory>>) {
 
 #[cfg(test)]
 mod test {
-    use crate::binary::word::EMPTY_WORD;
-    use crate::binary::{Word, BIT_0};
+    use crate::info::word::EMPTY_WORD;
+    use crate::info::{Word, BIT_0};
     use crate::mem::MainMemory;
     use crate::program::load_program;
     use std::cell::RefCell;

@@ -1,5 +1,5 @@
-use crate::binary::word::EMPTY_WORD;
-use crate::binary::{Word, BIT_0};
+use crate::info::word::EMPTY_WORD;
+use crate::info::{Word, BIT_0};
 use crate::mem::MainMemory;
 use std::cell::RefCell;
 use std::rc::Rc;

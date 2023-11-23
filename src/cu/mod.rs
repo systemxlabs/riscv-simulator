@@ -1,4 +1,4 @@
-use crate::binary::Word;
+use crate::info::Word;
 use crate::instruction::Instruction;
 
 /// Control unit

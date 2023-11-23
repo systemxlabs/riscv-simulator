@@ -1,6 +1,7 @@
-use crate::binary::{Bit, Byte, Word, BIT_0, BIT_1};
 use crate::circuit::decoder::ThreeToEightDecoder;
+use crate::info::{Bit, Byte, Word, BIT_0, BIT_1};
 use crate::mem::bank::Bank;
+use crate::util;
 
 pub const BANK_COUNT: usize = 8;
 
@@ -21,9 +22,9 @@ impl Chip {
     }
 
     pub fn exec(&mut self, addr: Word, write_enable: Bit, data: Byte) -> Byte {
-        let row_addr = [addr.bit(2), addr.bit(3), addr.bit(4)];
-        let col_addr = [addr.bit(5), addr.bit(6), addr.bit(7)];
-        let bank_addr = [addr.bit(8), addr.bit(9), addr.bit(10)];
+        let bank_addr = util::bank_addr(&addr);
+        let row_addr = util::row_addr(&addr);
+        let col_addr = util::col_addr(&addr);
 
         let byte = match ThreeToEightDecoder::exec(bank_addr[0], bank_addr[1], bank_addr[2]) {
             (BIT_1, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0) => {
@@ -60,8 +61,8 @@ impl Chip {
 #[cfg(test)]
 mod tests {
     use super::Chip;
-    use crate::binary::byte::EMPTY_BYTE;
-    use crate::binary::{Bit, Byte, Word, BIT_0, BIT_1};
+    use crate::info::byte::EMPTY_BYTE;
+    use crate::info::{Bit, Byte, Word, BIT_0, BIT_1};
 
     #[test]
     fn dram_chip() {

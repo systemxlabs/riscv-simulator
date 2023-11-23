@@ -1,4 +1,4 @@
-use crate::binary::{Bit, BIT_0, BIT_1};
+use crate::info::{Bit, BIT_0, BIT_1};
 
 pub const BYTE_BIT_SIZE: usize = 8; // 4 bits
 
@@ -86,7 +86,7 @@ impl std::fmt::Debug for Byte {
 #[cfg(test)]
 mod tests {
     use super::Byte;
-    use crate::binary::{BIT_0, BIT_1};
+    use crate::info::{BIT_0, BIT_1};
 
     #[test]
     fn get_set_bit() {
