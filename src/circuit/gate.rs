@@ -90,9 +90,17 @@ impl NandGate {
     }
 }
 
+pub struct NorGate;
+
+impl NorGate {
+    pub fn exec(input0: Bit, input1: Bit) -> Bit {
+        NotGate::exec(OrGate::exec(input0, input1))
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::circuit::gate::{NandGate, XorGate};
+    use crate::circuit::gate::{NandGate, NorGate, XorGate};
     use crate::info::{BIT_0, BIT_1};
 
     #[test]
@@ -109,5 +117,13 @@ mod tests {
         assert_eq!(NandGate::exec(BIT_1, BIT_1), BIT_0);
         assert_eq!(NandGate::exec(BIT_0, BIT_1), BIT_1);
         assert_eq!(NandGate::exec(BIT_1, BIT_0), BIT_1);
+    }
+
+    #[test]
+    fn nor() {
+        assert_eq!(NorGate::exec(BIT_0, BIT_0), BIT_1);
+        assert_eq!(NorGate::exec(BIT_1, BIT_1), BIT_0);
+        assert_eq!(NorGate::exec(BIT_0, BIT_1), BIT_0);
+        assert_eq!(NorGate::exec(BIT_1, BIT_0), BIT_0);
     }
 }
