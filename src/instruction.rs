@@ -1,6 +1,51 @@
 use crate::alu;
-use crate::info::Word;
+use crate::info::{Bit, Word};
 use crate::register::RegisterKind;
+use crate::info::{BIT_0, BIT_1};
+
+pub struct Instruction(Word);
+
+impl Instruction {
+    pub fn opcode(&self) -> [Bit; 7] {
+        [
+            self.0.bit(0),
+            self.0.bit(1),
+            self.0.bit(2),
+            self.0.bit(3),
+            self.0.bit(4),
+            self.0.bit(5),
+            self.0.bit(6),
+        ]
+    }
+    pub fn format(&self) -> InstructionFormat {
+        let opcode = self.opcode();
+        match opcode {
+            // 1110110
+            [BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1, BIT_0] => InstructionFormat::U,
+            // 1111011
+            [BIT_1, BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1] => InstructionFormat::J,
+            // 1100000
+            [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => InstructionFormat::I,
+            // 1100011
+            [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_1] => InstructionFormat::B,
+            // 1100010
+            [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_0] => InstructionFormat::S,
+            [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {},
+            [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {},
+            _ => panic!("instruction opcode is illegal")
+        }
+        todo!()
+    }
+}
+
+pub enum InstructionFormat {
+    I,
+    S,
+    R,
+    B,
+    J,
+    U,
+}
 
 pub struct Immediate(i32);
 impl Immediate {
@@ -18,7 +63,7 @@ impl ShiftAmount {
     }
 }
 
-pub enum Instruction {
+pub enum InstructionType {
     /// Integer Computation
     /// add (immediate)
     ADD(RegisterKind, RegisterKind, RegisterKind),
@@ -90,19 +135,19 @@ impl Instruction {
         todo!()
     }
 
-    pub fn as_alu_operation(&self) -> alu::Operation {
-        match self {
-            Instruction::ADD(_, _, _) | Instruction::ADDI(_, _, _) => alu::Operation::ADD,
-            Instruction::AND(_, _, _) | Instruction::ANDI(_, _, _) => alu::Operation::AND,
-            Instruction::SUB(_, _, _) => alu::Operation::SUB,
-            Instruction::OR(_, _, _) | Instruction::ORI(_, _, _) => alu::Operation::OR,
-            Instruction::XOR(_, _, _) | Instruction::XORI(_, _, _) => alu::Operation::XOR,
-            Instruction::SLL(_, _, _) | Instruction::SLLI(_, _, _) => alu::Operation::SLL,
-            Instruction::SRA(_, _, _) | Instruction::SRAI(_, _, _) => alu::Operation::SRA,
-            Instruction::SRL(_, _, _) | Instruction::SRLI(_, _, _) => alu::Operation::SRA,
-            Instruction::SLT(_, _, _) | Instruction::SLTI(_, _, _) => alu::Operation::SLT,
-            Instruction::SLTU(_, _, _) | Instruction::SLTIU(_, _, _) => alu::Operation::SLTU,
-            _ => panic!("Can not convert to alu operation"),
-        }
-    }
+    // pub fn as_alu_operation(&self) -> alu::Operation {
+    //     match self {
+    //         Instruction::ADD(_, _, _) | Instruction::ADDI(_, _, _) => alu::Operation::ADD,
+    //         Instruction::AND(_, _, _) | Instruction::ANDI(_, _, _) => alu::Operation::AND,
+    //         Instruction::SUB(_, _, _) => alu::Operation::SUB,
+    //         Instruction::OR(_, _, _) | Instruction::ORI(_, _, _) => alu::Operation::OR,
+    //         Instruction::XOR(_, _, _) | Instruction::XORI(_, _, _) => alu::Operation::XOR,
+    //         Instruction::SLL(_, _, _) | Instruction::SLLI(_, _, _) => alu::Operation::SLL,
+    //         Instruction::SRA(_, _, _) | Instruction::SRAI(_, _, _) => alu::Operation::SRA,
+    //         Instruction::SRL(_, _, _) | Instruction::SRLI(_, _, _) => alu::Operation::SRA,
+    //         Instruction::SLT(_, _, _) | Instruction::SLTI(_, _, _) => alu::Operation::SLT,
+    //         Instruction::SLTU(_, _, _) | Instruction::SLTIU(_, _, _) => alu::Operation::SLTU,
+    //         _ => panic!("Can not convert to alu operation"),
+    //     }
+    // }
 }

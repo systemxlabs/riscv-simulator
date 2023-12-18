@@ -1,4 +1,7 @@
-use crate::info::Bit;
+use crate::info::{Bit, Word};
+
+pub struct Register(Word);
+
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum RegisterKind {
@@ -42,11 +45,4 @@ pub enum RegisterKind {
     S9,
     S10,
     S11,
-}
-
-impl RegisterKind {
-    pub fn bits(&self) -> [Bit; 5] {
-        let bits = [Bit::new(); 5];
-        todo!()
-    }
 }

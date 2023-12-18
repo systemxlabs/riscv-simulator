@@ -1,8 +1,8 @@
 use crate::alu::Alu;
 use crate::bus::Bus;
-use crate::cu::Cu;
 use std::cell::RefCell;
 use std::rc::Rc;
+use crate::cu::cu::Cu;
 
 pub trait Execution {
     fn fetch(&self);
