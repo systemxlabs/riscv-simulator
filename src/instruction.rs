@@ -1,41 +1,80 @@
-use crate::alu;
-use crate::info::{Bit, Word};
-use crate::info::{BIT_0, BIT_1};
+use crate::info::{parse_bits, Bit, Word};
 use crate::register::RegisterKind;
 
 pub struct Instruction(Word);
 
-impl Instruction {
-    pub fn opcode(&self) -> [Bit; 7] {
-        [
-            self.0.bit(0),
-            self.0.bit(1),
-            self.0.bit(2),
-            self.0.bit(3),
-            self.0.bit(4),
-            self.0.bit(5),
-            self.0.bit(6),
-        ]
+pub fn decode_inst(inst: Word) -> InstructionFormat {
+    let opcode = inst.bits(0..7);
+    if opcode == parse_bits("1110110") || opcode == parse_bits("1110100") {
+        // U format
+        return InstructionFormat::U {
+            opcode: opcode.try_into().unwrap(),
+            rd: inst.bits(7..12).try_into().unwrap(),
+            imm12_31: inst.bits(12..32).try_into().unwrap(),
+        };
     }
-    // pub fn format(&self) -> InstructionFormat {
-    //     let opcode = self.opcode();
-    //     match opcode {
-    //         // 1110110
-    //         [BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1, BIT_0] => InstructionFormat::U,
-    //         // 1111011
-    //         [BIT_1, BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1] => InstructionFormat::J,
-    //         // 1100000
-    //         [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => InstructionFormat::I,
-    //         // 1100011
-    //         [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_1] => InstructionFormat::B,
-    //         // 1100010
-    //         [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_0] => InstructionFormat::S,
-    //         [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {}
-    //         [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {}
-    //         _ => panic!("instruction opcode is illegal"),
-    //     }
-    //     todo!()
-    // }
+    if opcode == parse_bits("1111011") {
+        // J format
+        return InstructionFormat::J {
+            opcode: opcode.try_into().unwrap(),
+            rd: inst.bits(7..12).try_into().unwrap(),
+            imm12_19: inst.bits(12..19).try_into().unwrap(),
+            imm11: inst.bits(19..20)[0],
+            imm1_10: inst.bits(20..31).try_into().unwrap(),
+            imm20: inst.bits(31..32)[0],
+        };
+    }
+    if opcode == parse_bits("1110011")
+        || opcode == parse_bits("1100000")
+        || opcode == parse_bits("1100100")
+        || opcode == parse_bits("1111000")
+        || opcode == parse_bits("1100111")
+    {
+        // I format
+        return InstructionFormat::I {
+            opcode: opcode.try_into().unwrap(),
+            rd: inst.bits(7..12).try_into().unwrap(),
+            func3: inst.bits(12..15).try_into().unwrap(),
+            rs1: inst.bits(15..20).try_into().unwrap(),
+            imm0_11: inst.bits(20..32).try_into().unwrap(),
+        };
+    }
+    if opcode == parse_bits("1100011") {
+        // B format
+        return InstructionFormat::B {
+            opcode: opcode.try_into().unwrap(),
+            imm11: inst.bits(7..8)[0],
+            imm1_4: inst.bits(8..12).try_into().unwrap(),
+            func3: inst.bits(12..15).try_into().unwrap(),
+            rs1: inst.bits(15..20).try_into().unwrap(),
+            rs2: inst.bits(20..25).try_into().unwrap(),
+            imm5_10: inst.bits(25..31).try_into().unwrap(),
+            imm12: inst.bits(31..32)[0],
+        };
+    }
+    if opcode == parse_bits("1100010") {
+        // S format
+        return InstructionFormat::S {
+            opcode: opcode.try_into().unwrap(),
+            imm0_4: inst.bits(7..12).try_into().unwrap(),
+            func3: inst.bits(12..15).try_into().unwrap(),
+            rs1: inst.bits(15..20).try_into().unwrap(),
+            rs2: inst.bits(20..25).try_into().unwrap(),
+            imm5_11: inst.bits(25..32).try_into().unwrap(),
+        };
+    }
+    if opcode == parse_bits("1100110") {
+        // R format
+        return InstructionFormat::R {
+            opcode: opcode.try_into().unwrap(),
+            rd: inst.bits(7..12).try_into().unwrap(),
+            func3: inst.bits(12..15).try_into().unwrap(),
+            rs1: inst.bits(15..20).try_into().unwrap(),
+            rs2: inst.bits(20..25).try_into().unwrap(),
+            func7: inst.bits(25..32).try_into().unwrap(),
+        };
+    }
+    panic!("instruction opcode is illegal")
 }
 
 pub enum InstructionFormat {
@@ -175,24 +214,30 @@ pub enum InstructionType {
     SW(RegisterKind, RegisterKind),
 }
 
-impl Instruction {
-    pub fn word(&self) -> Word {
-        todo!()
-    }
+#[cfg(test)]
+mod tests {
+    use crate::info::{Word, BIT_0, BIT_1};
+    use crate::instruction::{decode_inst, InstructionFormat};
 
-    // pub fn as_alu_operation(&self) -> alu::Operation {
-    //     match self {
-    //         Instruction::ADD(_, _, _) | Instruction::ADDI(_, _, _) => alu::Operation::ADD,
-    //         Instruction::AND(_, _, _) | Instruction::ANDI(_, _, _) => alu::Operation::AND,
-    //         Instruction::SUB(_, _, _) => alu::Operation::SUB,
-    //         Instruction::OR(_, _, _) | Instruction::ORI(_, _, _) => alu::Operation::OR,
-    //         Instruction::XOR(_, _, _) | Instruction::XORI(_, _, _) => alu::Operation::XOR,
-    //         Instruction::SLL(_, _, _) | Instruction::SLLI(_, _, _) => alu::Operation::SLL,
-    //         Instruction::SRA(_, _, _) | Instruction::SRAI(_, _, _) => alu::Operation::SRA,
-    //         Instruction::SRL(_, _, _) | Instruction::SRLI(_, _, _) => alu::Operation::SRA,
-    //         Instruction::SLT(_, _, _) | Instruction::SLTI(_, _, _) => alu::Operation::SLT,
-    //         Instruction::SLTU(_, _, _) | Instruction::SLTIU(_, _, _) => alu::Operation::SLTU,
-    //         _ => panic!("Can not convert to alu operation"),
-    //     }
-    // }
+    #[test]
+    fn test_decode() {
+        let fmt = decode_inst(Word::from_str("11001100010000001000000100000000"));
+        let InstructionFormat::R {
+            opcode,
+            rd,
+            func3,
+            rs1,
+            rs2,
+            func7,
+        } = fmt
+        else {
+            panic!()
+        };
+        assert_eq!(opcode, [BIT_1, BIT_1, BIT_0, BIT_0, BIT_1, BIT_1, BIT_0]);
+        assert_eq!(rd, [BIT_0, BIT_0, BIT_1, BIT_0, BIT_0]);
+        assert_eq!(func3, [BIT_0, BIT_0, BIT_0]);
+        assert_eq!(rs1, [BIT_0, BIT_1, BIT_0, BIT_0, BIT_0]);
+        assert_eq!(rs2, [BIT_0, BIT_0, BIT_0, BIT_1, BIT_0]);
+        assert_eq!(func7, [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0]);
+    }
 }

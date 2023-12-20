@@ -1,5 +1,6 @@
 use crate::info::byte::{BYTE_ONE, EMPTY_BYTE};
 use crate::info::{Bit, Byte, BYTE_BIT_SIZE, BYTE_FOUR};
+use std::ops::Range;
 
 pub const WORD_BYTE_SIZE: usize = 4; // 4 bytes
 
@@ -52,6 +53,14 @@ impl Word {
     pub fn bit(&self, index: usize) -> Bit {
         let byte = self.byte(index / BYTE_BIT_SIZE);
         byte.bit(index % BYTE_BIT_SIZE)
+    }
+
+    pub fn bits(&self, range: Range<usize>) -> Vec<Bit> {
+        let mut bits = Vec::new();
+        for i in range {
+            bits.push(self.bit(i));
+        }
+        bits
     }
 
     pub fn set_bit(&mut self, bit_index: usize, value: Bit) {

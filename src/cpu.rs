@@ -3,6 +3,7 @@ use crate::alu::Alu;
 use crate::bus::Bus;
 use crate::cu::cu::Cu;
 use crate::info::{Word, BIT_0, WORD_FOUR};
+use crate::instruction::{decode_inst, InstructionFormat};
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -20,6 +21,7 @@ pub struct Cpu {
     pc: Word,
     adder: MultiAdder,
     inst_reg: Word,
+    inst_fmt: Option<InstructionFormat>,
     // TODO imm generator
     // TODO branch comparator
     bus: Rc<RefCell<Bus>>,
@@ -33,6 +35,7 @@ impl Cpu {
             pc: Word::new(),
             adder: MultiAdder {},
             inst_reg: Word::new(),
+            inst_fmt: None,
             bus,
         }
     }
@@ -49,7 +52,8 @@ impl Pipeline for Cpu {
     }
 
     fn decode(&mut self) {
-        todo!()
+        let inst_fmt = decode_inst(self.inst_reg);
+        self.inst_fmt = Some(inst_fmt);
     }
 
     fn execute(&mut self) {
