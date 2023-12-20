@@ -1,7 +1,7 @@
 use crate::alu;
 use crate::info::{Bit, Word};
-use crate::register::RegisterKind;
 use crate::info::{BIT_0, BIT_1};
+use crate::register::RegisterKind;
 
 pub struct Instruction(Word);
 
@@ -17,34 +17,79 @@ impl Instruction {
             self.0.bit(6),
         ]
     }
-    pub fn format(&self) -> InstructionFormat {
-        let opcode = self.opcode();
-        match opcode {
-            // 1110110
-            [BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1, BIT_0] => InstructionFormat::U,
-            // 1111011
-            [BIT_1, BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1] => InstructionFormat::J,
-            // 1100000
-            [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => InstructionFormat::I,
-            // 1100011
-            [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_1] => InstructionFormat::B,
-            // 1100010
-            [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_0] => InstructionFormat::S,
-            [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {},
-            [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {},
-            _ => panic!("instruction opcode is illegal")
-        }
-        todo!()
-    }
+    // pub fn format(&self) -> InstructionFormat {
+    //     let opcode = self.opcode();
+    //     match opcode {
+    //         // 1110110
+    //         [BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1, BIT_0] => InstructionFormat::U,
+    //         // 1111011
+    //         [BIT_1, BIT_1, BIT_1, BIT_1, BIT_0, BIT_1, BIT_1] => InstructionFormat::J,
+    //         // 1100000
+    //         [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => InstructionFormat::I,
+    //         // 1100011
+    //         [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_1] => InstructionFormat::B,
+    //         // 1100010
+    //         [BIT_1, BIT_1, BIT_0, BIT_0, BIT_0, BIT_1, BIT_0] => InstructionFormat::S,
+    //         [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {}
+    //         [BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0] => {}
+    //         _ => panic!("instruction opcode is illegal"),
+    //     }
+    //     todo!()
+    // }
 }
 
 pub enum InstructionFormat {
-    I,
-    S,
-    R,
-    B,
-    J,
-    U,
+    R {
+        opcode: [Bit; 7],
+        rd: [Bit; 5],
+        func3: [Bit; 3],
+        rs1: [Bit; 5],
+        rs2: [Bit; 5],
+        func7: [Bit; 7],
+    },
+
+    I {
+        opcode: [Bit; 7],
+        rd: [Bit; 5],
+        func3: [Bit; 3],
+        rs1: [Bit; 5],
+        imm0_11: [Bit; 12],
+    },
+
+    S {
+        opcode: [Bit; 7],
+        imm0_4: [Bit; 5],
+        func3: [Bit; 3],
+        rs1: [Bit; 5],
+        rs2: [Bit; 5],
+        imm5_11: [Bit; 7],
+    },
+
+    B {
+        opcode: [Bit; 7],
+        imm11: Bit,
+        imm1_4: [Bit; 4],
+        func3: [Bit; 3],
+        rs1: [Bit; 5],
+        rs2: [Bit; 5],
+        imm5_10: [Bit; 6],
+        imm12: Bit,
+    },
+
+    U {
+        opcode: [Bit; 7],
+        rd: [Bit; 5],
+        imm12_31: [Bit; 20],
+    },
+
+    J {
+        opcode: [Bit; 7],
+        rd: [Bit; 5],
+        imm12_19: [Bit; 8],
+        imm11: Bit,
+        imm1_10: [Bit; 10],
+        imm20: Bit,
+    },
 }
 
 pub struct Immediate(i32);

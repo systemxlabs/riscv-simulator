@@ -2,7 +2,6 @@ use crate::info::{Bit, Word};
 
 pub struct Register(Word);
 
-
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum RegisterKind {
     /// hardwired zero

@@ -1,10 +1,11 @@
 use crate::info::byte::{BYTE_ONE, EMPTY_BYTE};
-use crate::info::{Bit, Byte, BYTE_BIT_SIZE};
+use crate::info::{Bit, Byte, BYTE_BIT_SIZE, BYTE_FOUR};
 
 pub const WORD_BYTE_SIZE: usize = 4; // 4 bytes
 
 pub const EMPTY_WORD: Word = Word(EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE);
 pub const WORD_ONE: Word = Word(BYTE_ONE, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE);
+pub const WORD_FOUR: Word = Word(BYTE_FOUR, EMPTY_BYTE, EMPTY_BYTE, EMPTY_BYTE);
 
 #[derive(Eq, PartialEq, Copy, Clone)]
 pub struct Word(Byte, Byte, Byte, Byte);

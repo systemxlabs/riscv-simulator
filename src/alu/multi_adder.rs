@@ -6,12 +6,12 @@ pub struct MultiAdder;
 
 impl MultiAdder {
     /// input two words + carry_in, output carry + sum
-    pub fn exec(input1: Word, input2: Word, mut carry_in: Bit) -> (Bit, Word) {
+    pub fn exec(input0: Word, input1: Word, mut carry_in: Bit) -> (Bit, Word) {
         let mut sum_word = Word::new();
 
         for i in 0..WORD_BYTE_SIZE * BYTE_BIT_SIZE {
-            let bit_a = input1.bit(i);
-            let bit_b = input2.bit(i);
+            let bit_a = input0.bit(i);
+            let bit_b = input1.bit(i);
 
             let (carry_out, sum) = FullAdder::exec(bit_a, bit_b, carry_in);
             carry_in = carry_out;

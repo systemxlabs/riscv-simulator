@@ -1,5 +1,5 @@
 use crate::bus::Bus;
-use crate::cpu::{Cpu, Execution};
+use crate::cpu::{Cpu, Pipeline};
 use crate::mem::MainMemory;
 use crate::program::load_program;
 use std::cell::RefCell;
@@ -20,7 +20,7 @@ mod util;
 fn main() {
     let main_mem = Rc::new(RefCell::new(MainMemory::new()));
     let bus = Rc::new(RefCell::new(Bus::new(main_mem.clone())));
-    let cpu = Cpu::new(bus);
+    let mut cpu = Cpu::new(bus);
 
     // load program instructions into memory
     load_program(main_mem);

@@ -4,6 +4,7 @@ pub const BYTE_BIT_SIZE: usize = 8; // 4 bits
 
 pub const EMPTY_BYTE: Byte = Byte(BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0);
 pub const BYTE_ONE: Byte = Byte(BIT_1, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0);
+pub const BYTE_FOUR: Byte = Byte(BIT_0, BIT_0, BIT_1, BIT_0, BIT_0, BIT_0, BIT_0, BIT_0);
 
 /// A byte is a group of 8 bits.
 /// Little endian.

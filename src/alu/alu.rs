@@ -27,6 +27,7 @@ pub enum Operation {
 pub struct Alu;
 
 impl Alu {
+    // TODO flags: zero, overflow, sign, carry
     pub fn exec(&self, op: Operation, input1: Word, input2: Word) -> Word {
         match op {
             Operation::ADD => self.add(input1, input2, BIT_0),
